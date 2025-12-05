@@ -10,28 +10,10 @@ Todo el ecosistema corre sobre Docker y Docker Compose.
 ## Características Principales
 
 ### Laravel API (Microservicio Principal)
-- CRUD completo utilizando Eloquent ORM.
-- Validación robusta de datos entrantes.
-- Soft delete implementado.
-- Auto-generación de SKU con el formato `CT + CódigoPaís + ID`.
-- RESTful API con respuestas JSON estandarizadas.
-- Manejo de errores con códigos HTTP adecuados.
-- Ejecutado completamente dentro de contenedores Docker.
 
 ### Node.js API (Microservicio de Procesamiento)
-- Gateway inteligente entre clientes externos y Laravel.
-- Procesamiento y enriquecimiento de datos.
-- Comunicación HTTP con Axios hacia Laravel dentro de la red Docker.
-- Logging detallado para depuración.
-- Health checks integrados.
-- Ejecutado completamente dentro de contenedores Docker.
 
 ### Sistema Integrado
-- Comunicación HTTP/JSON entre ambos microservicios dentro de la red Docker.
-- Base de datos MySQL corriendo en contenedor dedicado.
-- Validación en ambos microservicios.
-- Documentación clara con ejemplos reales.
-- Scripts de prueba incluidos.
 
 ---
 
@@ -101,18 +83,6 @@ Respuesta final de Node.js:
 Toda la arquitectura se ejecuta utilizando Docker y Docker Compose.
 
 ---
-
-## Levantar el entorno en desarrollo
-
-```
-./docker-up.sh
-```
-
-## Detener todos los contenedores
-
-```
-./docker-stop.sh
-```
 
 ## Probar funcionamiento del sistema
 
