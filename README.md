@@ -1,6 +1,6 @@
 # Proyecto de Microservicios – APIs Laravel y Node.js
 
-Este proyecto implementa una arquitectura de microservicios donde Laravel funciona como el servicio principal encargado del CRUD y persistencia de datos, mientras que Node.js actúa como un microservicio de procesamiento y como un gateway intermedio entre clientes externos y la API principal.
+En este proyecto se una arquitectura de microservicios donde Laravel funciona como el servicio principal encargado del CRUD y persistencia de datos, Node.js de desempeña como un microservicio de procesamiento y como un puente intermedio entre clientes externos y la API principal.
 
 ---
 
