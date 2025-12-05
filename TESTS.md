@@ -13,6 +13,7 @@ curl -X PUT http://localhost:8000/api/products/1 \
 
 curl -X DELETE http://localhost:8000/api/products/1
 
+
 # Pruebas Manuales a la API de Node.js
 curl http://localhost:3001/api/health
 curl http://localhost:3001/api/products

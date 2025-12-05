@@ -73,8 +73,5 @@ class ProductSeeder extends Seeder
         foreach ($products as $p) {
             Product::create($p);
         }
-
-        // Mensaje para saber que se creó bien
-        $this->command->info(count($products) . ' productos de prueba creados correctamente!');
     }
 }

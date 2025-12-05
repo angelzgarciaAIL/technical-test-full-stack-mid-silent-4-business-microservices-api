@@ -30,7 +30,7 @@ sudo mysql -e "CREATE DATABASE IF NOT EXISTS microservices_db;"
 
 # 3. CLONE AND SETUP PROJECT
 cd ~
-git clone https://github.com/tu-repositorio/prueba-tecnica-full-stack-mid-silent-4-business.git
+git clone https://github.com/angelzgarciaAIL/technical-test-full-stack-mid-silent-4-business-microservices-api.git
 cd prueba-tecnica-full-stack-mid-silent-4-business
 
 # 4. LARAVEL SETUP
