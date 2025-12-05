@@ -1,0 +1,32 @@
+# Laravel
+/laravel-api/vendor/
+/laravel-api/node_modules/
+/laravel-api/.env
+/laravel-api/storage/framework/cache/data/
+/laravel-api/storage/framework/views/
+/laravel-api/storage/logs/
+/laravel-api/.phpunit.result.cache
+/laravel-api/public/hot
+/laravel-api/public/storage
+/laravel-api/bootstrap/cache/
+
+# Node.js
+/nodejs-api/node_modules/
+/nodejs-api/.env
+/nodejs-api/npm-debug.log*
+/nodejs-api/yarn-debug.log*
+/nodejs-api/yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database (archivos SQLite si los hay)
+*.sqlite
+*.sqlite-journal
