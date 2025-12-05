@@ -120,4 +120,3 @@ Toda la arquitectura se ejecuta utilizando Docker y Docker Compose.
 ./docker-test.sh
 ```
 
-EOF
