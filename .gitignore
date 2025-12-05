@@ -8,7 +8,7 @@
 /laravel-api/.phpunit.result.cache
 /laravel-api/public/hot
 /laravel-api/public/storage
-/laravel-api/bootstrap/cache/
+/laravel-api/bootstrap/cache/*.php
 
 # Node.js
 /nodejs-api/node_modules/
@@ -27,6 +27,26 @@
 .DS_Store
 Thumbs.db
 
-# Database (archivos SQLite si los hay)
+# Docker (si decides usarlo después)
+docker-compose*.yml
+Dockerfile*
+.env.docker
+
+# Logs de scripts
+*.log
+
+# Archivos de configuración local
+.env.local
+.env.*.local
+
+# Archivos de backup
+*.backup
+*.bak
+
+# Temporal files
+*.tmp
+*.temp
+
+# Database files (except schema.sql)
 *.sqlite
 *.sqlite-journal
