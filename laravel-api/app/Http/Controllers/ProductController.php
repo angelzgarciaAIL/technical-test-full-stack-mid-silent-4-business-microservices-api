@@ -9,119 +9,146 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of products
+     * Mostrar todos los productos que no estén eliminados.
+     *
+     * Aquí simplemente buscamos productos donde el campo deleted_at esté en NULL,
+     * porque eso quiere decir que no están eliminados (soft delete).
      */
     public function index()
     {
-        $products = Product::whereNull('deleted_at')->get();
+        // Obtener todos los productos activos
+        $prods = Product::whereNull('deleted_at')->get();
+
+        // Devolver en JSON
         return response()->json([
-            'success' => true,
-            'data' => $products
+            'ok' => true,
+            'data' => $prods
         ]);
     }
 
     /**
-     * Store a newly created product
+     * Crear un producto nuevo.
+     *
+     * Aquí se validan los datos y si están bien se crea el producto.
+     * Si falta un dato obligatorio, se devuelven errores.
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        // Reglas de validación básicas
+        $val = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'country_code' => 'required|string|size:2',
             'load_date' => 'nullable|date'
         ]);
 
-        if ($validator->fails()) {
+        if ($val->fails()) {
+            // Si algo estuvo mal, regresamos errores
             return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
+                'ok' => false,
+                'errors' => $val->errors()
             ], 422);
         }
 
-        $product = Product::create($request->only(['name', 'country_code', 'load_date']));
+        // Crear el producto (solo enviamos los campos que queremos guardar)
+        $nuevo = Product::create([
+            'name' => $request->name,
+            'country_code' => $request->country_code,
+            'load_date' => $request->load_date
+        ]);
 
+        // Respuesta de éxito
         return response()->json([
-            'success' => true,
-            'message' => 'Product created successfully',
-            'data' => $product
+            'ok' => true,
+            'msg' => 'Producto creado correctamente',
+            'data' => $nuevo
         ], 201);
     }
 
     /**
-     * Display the specified product
+     * Mostrar información de un producto por ID.
+     *
+     * Si el producto no existe o está eliminado, mandamos un error.
      */
     public function show($id)
     {
-        $product = Product::whereNull('deleted_at')->find($id);
+        // Buscar producto que no esté eliminado
+        $prod = Product::whereNull('deleted_at')->find($id);
 
-        if (!$product) {
+        if (!$prod) {
             return response()->json([
-                'success' => false,
-                'message' => 'Product not found'
+                'ok' => false,
+                'msg' => 'El producto no existe'
             ], 404);
         }
 
         return response()->json([
-            'success' => true,
-            'data' => $product
+            'ok' => true,
+            'data' => $prod
         ]);
     }
 
     /**
-     * Update the specified product
+     * Actualizar un producto.
+     *
+     * Todos los campos son opcionales, pero si vienen deben ser válidos.
      */
     public function update(Request $request, $id)
     {
-        $product = Product::whereNull('deleted_at')->find($id);
+        // Buscar producto activo
+        $prod = Product::whereNull('deleted_at')->find($id);
 
-        if (!$product) {
+        if (!$prod) {
             return response()->json([
-                'success' => false,
-                'message' => 'Product not found'
+                'ok' => false,
+                'msg' => 'Producto no encontrado'
             ], 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|required|string|max:255',
-            'country_code' => 'sometimes|required|string|size:2',
+        // Validación de actualización (más sencilla)
+        $val = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+            'country_code' => 'sometimes|string|size:2',
             'load_date' => 'nullable|date'
         ]);
 
-        if ($validator->fails()) {
+        if ($val->fails()) {
             return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
+                'ok' => false,
+                'errors' => $val->errors()
             ], 422);
         }
 
-        $product->update($request->only(['name', 'country_code', 'load_date']));
+        // Actualizar solo los campos enviados
+        $prod->update($request->only(['name', 'country_code', 'load_date']));
 
         return response()->json([
-            'success' => true,
-            'message' => 'Product updated successfully',
-            'data' => $product
+            'ok' => true,
+            'msg' => 'Producto actualizado',
+            'data' => $prod
         ]);
     }
 
     /**
-     * Remove the specified product (soft delete)
+     * Eliminar un producto (soft delete).
+     *
+     * Aquí no se borra de la base de datos. Solo se marca como eliminado.
      */
     public function destroy($id)
     {
-        $product = Product::whereNull('deleted_at')->find($id);
+        $prod = Product::whereNull('deleted_at')->find($id);
 
-        if (!$product) {
+        if (!$prod) {
             return response()->json([
-                'success' => false,
-                'message' => 'Product not found'
+                'ok' => false,
+                'msg' => 'Producto no encontrado'
             ], 404);
         }
 
-        $product->delete();
+        $prod->delete();
 
         return response()->json([
-            'success' => true,
-            'message' => 'Product deleted successfully'
+            'ok' => true,
+            'msg' => 'Producto eliminado'
         ]);
     }
 }
