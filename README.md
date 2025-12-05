@@ -1,88 +1,88 @@
 # Proyecto de Microservicios – APIs Laravel y Node.js
 
-En este proyecto se una arquitectura de microservicios donde Laravel funciona como el servicio principal encargado del CRUD y persistencia de datos, Node.js de desempeña como un microservicio de procesamiento y como un puente intermedio entre clientes externos y la API principal.
+## Descripción
+Implementación de una arquitectura de microservicios completamente dockerizada.
+Laravel funciona como servicio principal de CRUD y persistencia, mientras que Node.js actúa como microservicio de procesamiento y como gateway intermedio entre clientes externos y la API principal.
+Todo el ecosistema corre sobre Docker y Docker Compose.
 
 ---
 
-## Características principales
+## Características Principales
 
-- Laravel como microservicio principal con CRUD completo utilizando Eloquent ORM.
-- Node.js como microservicio de procesamiento de datos y pasarela de comunicación.
-- Comunicación entre servicios mediante solicitudes HTTP con mensajes JSON.
-- Implementación de eliminación lógica mediante soft delete.
-- Generación automática de SKU con el formato: CT + CódigoDePaís + ID.
-- APIs RESTful con manejo adecuado de códigos de estado HTTP.
-- Validación de datos en ambos microservicios.
-- Manejo de errores con mensajes claros y registros para depuración.
+### Laravel API (Microservicio Principal)
+- CRUD completo utilizando Eloquent ORM.
+- Validación robusta de datos entrantes.
+- Soft delete implementado.
+- Auto-generación de SKU con el formato `CT + CódigoPaís + ID`.
+- RESTful API con respuestas JSON estandarizadas.
+- Manejo de errores con códigos HTTP adecuados.
+- Ejecutado completamente dentro de contenedores Docker.
 
----
+### Node.js API (Microservicio de Procesamiento)
+- Gateway inteligente entre clientes externos y Laravel.
+- Procesamiento y enriquecimiento de datos.
+- Comunicación HTTP con Axios hacia Laravel dentro de la red Docker.
+- Logging detallado para depuración.
+- Health checks integrados.
+- Ejecutado completamente dentro de contenedores Docker.
 
-## Arquitectura general
-
-El sistema está compuesto por dos servicios independientes:
-
-1. **Servicio Laravel (Microservicio CRUD)**
-   Responsable de:
-   - Crear, actualizar, leer y eliminar productos.
-   - Gestionar la base de datos.
-   - Proveer datos limpios a otros servicios.
-
-2. **Servicio Node.js (Gateway y Procesador de Datos)**
-   Responsable de:
-   - Consumir la API de Laravel.
-   - Normalizar, procesar y enriquecer la información.
-   - Exponer una API pública simplificada para clientes externos.
-   - Generar SKUs automáticamente.
-   - Aplicar reglas adicionales según el país o categoría.
+### Sistema Integrado
+- Comunicación HTTP/JSON entre ambos microservicios dentro de la red Docker.
+- Base de datos MySQL corriendo en contenedor dedicado.
+- Validación en ambos microservicios.
+- Documentación clara con ejemplos reales.
+- Scripts de prueba incluidos.
 
 ---
 
-## Flujo de comunicación entre servicios
+## Flujo General entre Servicios
 
-1. Un cliente (frontend, CRM, script Python, etc.) realiza una petición al microservicio Node.js.
-2. Node.js valida la solicitud y la reenvía al servicio Laravel si es necesario.
-3. Laravel procesa la petición y responde a Node.js.
+1. Un cliente realiza una petición hacia el microservicio Node.js.
+2. Node.js valida la solicitud y la reenvía hacia Laravel de ser necesario.
+3. Laravel procesa la operación y responde a Node.js.
 4. Node.js transforma o enriquece la respuesta.
-5. Node.js devuelve la información final al cliente.
+5. El cliente recibe la información final procesada.
 
 ---
 
-## Endpoints principales
+## Endpoints Principales
 
-### Microservicio Laravel
+### Laravel API
 
 Método | Ruta | Descripción
 -------|------|-------------
-GET | `/api/products` | Lista los productos activos
+GET | `/api/products` | Lista productos activos
 POST | `/api/products` | Crea un nuevo producto
-GET | `/api/products/{id}` | Muestra un producto específico
-PUT | `/api/products/{id}` | Actualiza un producto existente
-DELETE | `/api/products/{id}` | Eliminación lógica del producto
+GET | `/api/products/{id}` | Muestra un producto
+PUT | `/api/products/{id}` | Actualiza un producto
+DELETE | `/api/products/{id}` | Eliminación lógica
 
 ---
 
-### Microservicio Node.js
+### Node.js API
 
 Método | Ruta | Descripción
 -------|------|-------------
-GET | `/api/health` | Verifica que el servicio esté activo
-GET | `/api/products` | Obtiene productos procesados y normalizados
-POST | `/api/products` | Crea un nuevo producto a través del gateway
+GET | `/api/health` | Estado del servicio
+GET | `/api/products` | Lista productos procesados
+POST | `/api/products` | Crea producto vía gateway
 
 ---
 
-## Ejemplo de flujo: creación de producto
+## Ejemplo de Flujo: Creación de Producto
 
-1. El cliente envía un POST a Node.js con:
+Solicitud del cliente hacia Node.js:
+
+```
 {
   "name": "Laptop Demo",
   "country_code": "US"
 }
-2. Node.js valida la entrada.
-3. Node.js envía la solicitud al microservicio Laravel.
-4. Laravel crea el producto y devuelve los datos sin SKU.
-5. Node.js genera el SKU basado en el país e ID del producto.
-6. Node.js devuelve al cliente algo como:
+```
+
+Respuesta final de Node.js:
+
+```
 {
   "success": true,
   "data": {
@@ -92,10 +92,32 @@ POST | `/api/products` | Crea un nuevo producto a través del gateway
     "country_code": "US"
   }
 }
+```
 
-## 🐳 DOCKER DEPLOYMENT
-### Quick Start with Docker:
-# Start with Docker
-./docker-start.sh
-# 4. Test
+---
+
+# DOCKER DEPLOYMENT
+
+Toda la arquitectura se ejecuta utilizando Docker y Docker Compose.
+
+---
+
+## Levantar el entorno en desarrollo
+
+```
+./docker-up.sh
+```
+
+## Detener todos los contenedores
+
+```
+./docker-stop.sh
+```
+
+## Probar funcionamiento del sistema
+
+```
 ./docker-test.sh
+```
+
+EOF
